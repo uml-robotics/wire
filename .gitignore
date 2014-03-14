@@ -1,16 +1,43 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# Build files
+msg_gen/
+srv_gen/
+build/
+doc/
+bin/
+lib/
+cmake_install.cmake
+_gtest_from_src/
+#QT
+CMakeLists.txt.user
+qtcreator-build/
+*pro
+*pro.user*
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+# Dynamic reconfigure
+docs/
+*.cfgc
+**/cfg/cpp/
+**/src/*/cfg/
+src/**/cfg
+src/**/__init__.py
 
-# .svn folders
-**/.svn/
+# Eclipse project
+.project
+.cproject
+.pydevproject
+.settings
+
+# Python
+*.pyc
+*.pkl
+
+
+# Temporary files
+*.swp
+*~
+
+# Mac os
+.DS_Store
+problib/src/problib/
+wire_msgs/src/
