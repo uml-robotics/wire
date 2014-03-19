@@ -85,7 +85,7 @@ bool WorldModelROS::initialize() {
 
 void WorldModelROS::registerEvidenceTopic(const std::string& topic_name) {
     ros::NodeHandle n;
-    subs_evidence_.push_back(n.subscribe(topic_name, 100, &WorldModelROS::evidenceCallback, this));
+    subs_evidence_.push_back(n.subscribe(topic_name, 5, &WorldModelROS::evidenceCallback, this));
 }
 
 void WorldModelROS::startThreaded() {
@@ -213,18 +213,25 @@ void WorldModelROS::evidenceCallback(const wire_msgs::WorldEvidence::ConstPtr& w
 
 void WorldModelROS::processEvidence(const ros::Duration max_duration) {
 
+    // Limit evidence buffer size (do not want to live in the past)
+    int max_buffer_size = 10;
+    while (evidence_buffer_.size() > max_buffer_size){
+      evidence_buffer_.pop_front();
+      ROS_WARN_STREAM("Discarding evidence, buffer full (max size "<< max_buffer_size <<")");
+    }
+
     ros::Time start_time = ros::Time::now();
 
     while(!evidence_buffer_.empty() && ros::Time::now() - start_time < max_duration) {
 
         ros::Time time_before_update = ros::Time::now();
 
-        processEvidence(evidence_buffer_.back());
+        processEvidence(evidence_buffer_.front());
 
         last_update_duration = (ros::Time::now().toSec() - time_before_update.toSec());
         max_update_duration = max(max_update_duration, last_update_duration);
 
-        evidence_buffer_.pop_back();
+        evidence_buffer_.pop_front();
     }
 }
 
