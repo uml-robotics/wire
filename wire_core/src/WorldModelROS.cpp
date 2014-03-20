@@ -217,7 +217,7 @@ void WorldModelROS::processEvidence(const ros::Duration max_duration) {
     int max_buffer_size = 10;
     while (evidence_buffer_.size() > max_buffer_size){
       evidence_buffer_.pop_front();
-      ROS_WARN_STREAM("Discarding evidence, buffer full (max size "<< max_buffer_size <<")");
+      ROS_DEBUG_STREAM("Discarding evidence, buffer full (max size "<< max_buffer_size <<")");
     }
 
     ros::Time start_time = ros::Time::now();
